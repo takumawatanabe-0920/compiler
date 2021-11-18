@@ -37,12 +37,84 @@ export class Compiler {
   }
 
   compileWrite() {
-    if (this.token.kind !== "number") {
-      throw new Error("構文エラー: writeの後ろに数値が必要");
-    }
-    this.codeBuilder.emitLit(this.token.value);
+    this.compileExpression();
     this.codeBuilder.emitOprWrt();
-    this.nextToken();
+  }
+
+  compileExpression() {
+    let shouldEmitNeg = false;
+    // 単項演算子の処理
+    switch (this.token.kind) {
+      case "+":
+        this.nextToken();
+        break;
+      case "-":
+        shouldEmitNeg = true;
+        this.nextToken();
+        break;
+      default:
+        break;
+    }
+    this.compileTerm();
+    if (shouldEmitNeg) {
+      this.codeBuilder.emitOprNeg();
+    }
+    // 中置演算子の処理
+    while (true) {
+      if (this.token.kind === "+") {
+        this.nextToken();
+        this.compileTerm();
+        this.codeBuilder.emitOprAdd();
+        continue;
+      }
+      if (this.token.kind === "-") {
+        this.nextToken();
+        this.compileTerm();
+        this.codeBuilder.emitOprSub();
+        continue;
+      }
+      break;
+    }
+  }
+
+  compileTerm() {
+    this.compileFactor();
+    while (true) {
+      if (this.token.kind === "*") {
+        this.nextToken();
+        this.compileFactor();
+        this.codeBuilder.emitOprMul();
+        continue;
+      }
+      if (this.token.kind === "/") {
+        this.nextToken();
+        this.compileFactor();
+        this.codeBuilder.emitOprDiv();
+        continue;
+      }
+      break;
+    }
+  }
+
+  compileFactor() {
+    // 数値
+    if (this.token.kind === "number") {
+      this.codeBuilder.emitLit(this.token.value);
+      this.nextToken();
+      return;
+    }
+    // 括弧で囲まれた式
+    if (this.token.kind === "(") {
+      this.nextToken();
+      this.compileExpression();
+      if (this.token.kind !== ")") {
+        throw new Error("構文エラー: 括弧が閉じていない");
+      }
+      this.nextToken();
+      return;
+    }
+    // それ以外はエラー
+    throw new Error("構文エラー");
   }
 }
 

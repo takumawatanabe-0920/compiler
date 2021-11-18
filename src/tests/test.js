@@ -2,10 +2,6 @@ import { VirtualMachine } from '../virtualMachine'
 import { compile } from '../compiler'
 import { Source } from '../source'
 
-test("jestが動く", () => {
-  expect(2 * 3).toBe(6);
-});
-
 test("空のプログラムをコンパイルして実行できる", () => {
   const source = ".";
   const code = compile(source);

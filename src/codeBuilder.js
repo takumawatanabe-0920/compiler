@@ -22,6 +22,28 @@ export class CodeBuilder {
     return this.emit({ kind: "lit", value });
   }
 
+  //operator
+
+  emitOprAdd() {
+    return this.emit({ kind: "opr",operator: "pls" });
+  }
+
+  emitOprSub() {
+    return this.emit({ kind: "opr",operator: "mns" });
+  }
+
+  emitOprDiv() {
+    return this.emit({ kind: "opr",operator: "div" });
+  }
+
+  emitOprMul() {
+    return this.emit({ kind: "opr",operator: "mul" });
+  }
+  
+  emitOprNeg() {
+    return this.emit({ kind: "opr",operator: "neg" });
+  }
+
   emitOprWrt() {
     return this.emit({ kind: "opr", operator: "wrt" });
   }
