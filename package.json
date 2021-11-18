@@ -1,0 +1,34 @@
+{
+  "name": "lexer",
+  "version": "1.0.0",
+  "description": "for training",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "takuma",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@types/jest": "^27.0.2",
+    "eslint": "^8.2.0",
+    "jest": "^27.3.1",
+    "prettier": "^2.4.1"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
